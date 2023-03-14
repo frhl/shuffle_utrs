@@ -1,13 +1,12 @@
 #!/bin/bash
 
-#$ -wd /well/lindgren/flassen/projects/utrs/whiffin-rotation
-#$ -N submit_shuffle_5utr
-#$ -o logs/submit_shuffle_5utr.log
-#$ -e logs/submit_shuffle_5utr.errors.log
+#$ -wd /well/lindgren/flassen/projects/utrs/shuffle_utrs
+#$ -N shuffle_utrs
+#$ -o logs/shuffle_utrs.log
+#$ -e logs/shuffle_utrs.errors.log
 #$ -q short.qe
 #$ -P lindgren.prjc
 #$ -pe shmem 2
-#$ -t 1-30
 
 
 set +eu
@@ -19,24 +18,22 @@ set -eu
 
 readonly array_replicate="${SGE_TASK_ID}"
 
-readonly rscript="workflows/shuffle_utrs.R"
+readonly rscript="scripts/shuffle_utrs.R"
 
-readonly path_mane="/well/lindgren/flassen/projects/210629_MANE.GRCh38.v0.95.combined-table.txt"
-readonly path_features="/well/lindgren/flassen/projects/utrs/whiffin-rotation/derived/tables/210629_MANE.v0.95.UTR_features.txt"
-readonly subset="five_prime_UTR"
-readonly iterations=1000
+readonly in_dir="/well/lindgren/flassen/projects/utrs/shuffle_utrs/extdata"
+readonly path_sequences="${in_dir}/5utr_seqs.txt"
 
+readonly seed=142
+readonly replicates=5
 
-readonly out_dir="/well/lindgren/flassen/projects/utrs/whiffin-rotation/derived/run002"
-readonly out_prefix="${out_dir}/shuffle"
+readonly out_dir="/well/lindgren/flassen/projects/utrs/shuffle_utrs/derived/14mar23"
+readonly out_prefix="${out_dir}/test_sim"
 
 mkdir -p ${out_dir}
 
 Rscript ${rscript} \
-  --path_mane "${path_mane}" \
-  --path_features "${path_features}" \
-  --subset "${subset}" \
-  --array_replicate "${array_replicate}" \
-  --iterations "${iterations}" \
-  --out_prefix "${out_prefix}"
+  --path_sequences "${path_sequences}" \
+  --replicates "${replicates}" \
+  --out_prefix "${out_prefix}"  \
+  --seed "${seed}"
 
