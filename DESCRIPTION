@@ -1,0 +1,30 @@
+Package: shuffle UTRs
+Type: Package
+Title: UTR analysis using R
+Version: 0.1.1
+Author: FL
+Maintainer: FL <flassen@well.ox.ac.uk>
+Description: A package to shuffle UTRs. 
+License: MIT + file LICENSE
+Encoding: UTF-8
+LazyData: true
+Depends:
+    R (>= 3.6),
+    ggplot2,
+    data.table,
+    reshape2,
+    reticulate
+Suggests:
+    devtools,
+    testthat (>= 2.1.0)
+Imports:
+    gplots
+RoxygenNote: 7.1.1
+Collate:
+    'misc.R'			
+    'sim_expected_codons.R'
+    'sim_seq.R'
+
+
+
+
