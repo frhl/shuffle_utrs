@@ -14,8 +14,8 @@ source_python('python/shuffle_utrs.py')
 main <- function(args) {
 
     # setup parameteres
-    seed <- as.numeric(args$seed)
-    replicates <- as.numeric(args$replicates)
+    seed <- as.integer(args$seed)
+    replicates <- as.integer(args$replicates)
     path_sequences <- file.path(args$path_sequence)
 
     # import sequences
@@ -23,19 +23,23 @@ main <- function(args) {
     stopifnot(nrow(d)>1)
     stopifnot(replicates>0)
 
+    # expect column names
+    stopifnot("seq" %in% colnames(d))
+    stopifnot("ensgid" %in% colnames(d))
+
     # go over each gene sequence
-
-    idx <- 1
-    sim_seq <- sim_expected_codons(d$seq, k = 2, iter = replicates, codons = codons, parallel = T, seed = i)
-    sim_seq <- do.call(rbind, sim_seq)
-
-    outfile <- paste0(args$out_prefix, ".txt.gz")
-    fwrite(sim_seq, outfile_est, sep = ',')
-
+    for (idx in 1:5){ #nrow(d)){
+        # get gene & sequence 
+        gene <- d$ensgid[idx]
+        sequence <- d$seq[idx]
+        # simulate context given sequence 
+        sequence <- as.vector(sequence)
+        sim_seq <- shuffle_utrs(seq=sequence, k=2, max_iter=replicates, seed=seed)
+        # combien and write to file
+        sim_out <- data.table(ensgid=gene, seqsim=sim_seq) 
+        outfile <- paste0(args$out_prefix,".",gene,".txt.gz")
+        fwrite(sim_out, outfile, sep = ',')
     }
-
-
-
   
 
 }

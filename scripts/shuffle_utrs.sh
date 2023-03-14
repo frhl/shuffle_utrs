@@ -24,10 +24,10 @@ readonly in_dir="/well/lindgren/flassen/projects/utrs/shuffle_utrs/extdata"
 readonly path_sequences="${in_dir}/5utr_seqs.txt"
 
 readonly seed=142
-readonly replicates=5
+readonly replicates=1000
 
 readonly out_dir="/well/lindgren/flassen/projects/utrs/shuffle_utrs/derived/14mar23"
-readonly out_prefix="${out_dir}/test_sim"
+readonly out_prefix="${out_dir}/sim${seed}"
 
 mkdir -p ${out_dir}
 
